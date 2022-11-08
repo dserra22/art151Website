@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 let allDishes: any = [];
 allDishes.push("Pasta");
@@ -21,43 +21,47 @@ allPasta.push({
 allPasta.push({
   name: "elbows alla vodka",
   desc: "This dish uses the vodka in order to make the flavors in the dish explode. Don't worry, cooking the dish evaporates the alcohol",
-  img: "elbowsallavodka.png",
+  img: "FALSE",
+  video: "elbowsallavodka.mp4",
 });
 let allChicken: any = [];
 allChicken.push({
   name: "Chicken parmesean",
   desc: "mama mia",
-  img: "chickenparm.png",
+  img: "FALSE",
+  video: "messup.mp4",
 });
 allChicken.push({
-  name: "Chicken Marsala",
-  desc: "Mama mia. Sweet baby jesus",
-  img: "chickenmarsala.png",
+  name: "Chicken burger",
+  desc: "Made this 11/02/22. It was the morning, I had one egg only. I needed more protein, so I said ok, lets make chicken burger",
+  img: "FALSE",
+  video: "chickenBurger.mp4",
 });
 allChicken.push({
   name: "Oven Roasted Stuffed Chicken breasts",
   desc: "wow",
-  img: "ovenroasted.png",
+  img: "chickenalfredo.jpg",
 });
 let allBread: any = [];
 allBread.push({
   name: "Italian bread",
   desc: "mama mia",
-  img: "italianbread.jpg",
+  img: "italianbread.JPG",
 });
 allBread.push({
   name: "My mess up",
   desc: "Mama mia. Sweet baby jesus",
-  img: "messup.png",
+  img: "FALSE",
+  video: "messup.mp4",
 });
 allBread.push({
   name: "white bread",
   desc: "EWWWWW white bread",
-  img: "whitebread.png",
+  img: "whitebread.webp",
 });
 
 const App = () => {
-  const [currentDish, updateDishes] = useState(allPasta);
+  const [currentDish, updateDishes] = useState(allBread);
   const chooseDish = (e: any) => {
     if (e.target.nodeName !== "P") return;
 
@@ -72,6 +76,33 @@ const App = () => {
     }
   };
 
+  const chooseDishName = (): string => {
+    if (currentDish === allBread) {
+      return "Bread";
+    } else if (currentDish === allPasta) {
+      return "Pasta";
+    } else if (currentDish === allChicken) {
+      return "Chicken";
+    }
+    return "";
+  };
+  const [dishName, updateDishName] = useState("");
+  const [dishLink, updateLinkName] = useState("");
+
+  useEffect(() => {
+    updateDishName(chooseDishName());
+    let curDish = chooseDishName();
+    if (curDish === "Bread") {
+      updateLinkName("https://en.wikipedia.org/wiki/Bread");
+    } else if (curDish === "Pasta") {
+      updateLinkName(
+        "https://www.eataly.com/us_en/magazine/eataly-recipes/italian-pasta-recipes/"
+      );
+    } else if (curDish === "Chicken") {
+      updateLinkName("https://en.wikipedia.org/wiki/Chicken");
+    }
+  }, [currentDish]);
+
   let currentCuisineJSX = currentDish.map((dish: any, i: number) => {
     let mediaJSX: JSX.Element = (
       <img
@@ -81,21 +112,17 @@ const App = () => {
       />
     );
 
-    // if (dish.img === "FALSE") {
-    //   mediaJSX = (
-    //     <video controls>
-    //       <source src={`pictures/${dish.video}`} type="video/mp4" />
-    //     </video>
-    //   );
-    // } else {
-    //   mediaJSX = (
-    //     <img
-    //       src={"pictures/chickenalfredo.jpg"}
-    //       alt={dish.name}
-    //       className="image"
-    //     />
-    //   );
-    // }
+    if (dish.img === "FALSE") {
+      mediaJSX = (
+        <video controls>
+          <source src={require(`/${dish.video}`)} type="video/mp4" />
+        </video>
+      );
+    } else {
+      mediaJSX = (
+        <img src={require(`./${dish.img}`)} alt={dish.name} className="image" />
+      );
+    }
 
     return (
       <li key={i} className="dish-box">
@@ -112,13 +139,15 @@ const App = () => {
     <>
       <header className="header">
         <div className="title">
-          <p>Italian cuisine</p>
+          <p>Italian Cuisine</p>
         </div>
         <ul onClick={chooseDish} className="links">
           {allDishes.map((dish: string, i: number) => {
             return (
               <li key={i} className="link-elem">
-                <p>{dish}</p>
+                <p className={`${dishName === dish ? "selected-dish" : ""}`}>
+                  {dish}
+                </p>
               </li>
             );
           })}
@@ -126,9 +155,16 @@ const App = () => {
       </header>
       <section className="italian-cuisine">
         <div className="container">
-          <h1>Italian Cuisine</h1>
+          <h1>{dishName}</h1>
           <div className="my-cooking">
             <ul>{currentCuisineJSX}</ul>
+          </div>
+        </div>
+        <div className="link">
+          <div className="link-title">
+            <a href={dishLink} target="_blank">
+              More {dishName}
+            </a>
           </div>
         </div>
       </section>
