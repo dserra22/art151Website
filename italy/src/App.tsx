@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 
 let allDishes: any = [];
 allDishes.push("Pasta");
@@ -39,13 +39,13 @@ allChicken.push({
 });
 allChicken.push({
   name: "Oven Roasted Stuffed Chicken breasts",
-  desc: "wow",
+  desc: "We have not made this yet lol, but I will make it later",
   img: "chickenalfredo.jpg",
 });
 let allBread: any = [];
 allBread.push({
   name: "Italian bread",
-  desc: "mama mia",
+  desc: "mama mia. Wow. This hit. It lasted me about 1 week and a half and it was delicious.",
   img: "italianbread.JPG",
 });
 allBread.push({
@@ -60,20 +60,27 @@ allBread.push({
   img: "whitebread.webp",
 });
 
+const dishReducer = (state: any, action: any): any => {
+  if (action.type === "Chicken") {
+    state = allChicken;
+  } else if (action.type === "Pasta") {
+    state = allPasta;
+  } else if (action.type === "Bread") {
+    state = allBread;
+  }
+
+  return state;
+};
+
 const App = () => {
-  const [currentDish, updateDishes] = useState(allBread);
+  const [currentDish, dispatchAllDishes] = useReducer(dishReducer, allBread);
+
   const chooseDish = (e: any) => {
     if (e.target.nodeName !== "P") return;
-
     let name = e.target.innerHTML;
-
-    if (name === "Chicken") {
-      updateDishes(allChicken);
-    } else if (name === "Pasta") {
-      updateDishes(allPasta);
-    } else if (name === "Bread") {
-      updateDishes(allBread);
-    }
+    dispatchAllDishes({
+      type: name,
+    });
   };
 
   const [dishName, updateDishName] = useState("");
@@ -109,13 +116,7 @@ const App = () => {
   }, [currentDish]);
 
   let currentCuisineJSX = currentDish.map((dish: any, i: number) => {
-    let mediaJSX: JSX.Element = (
-      <img
-        src={require(`./chickenalfredo.jpg`)}
-        alt={dish.name}
-        className="image"
-      />
-    );
+    let mediaJSX: JSX.Element;
 
     if (dish.img === "FALSE") {
       mediaJSX = (
@@ -144,9 +145,13 @@ const App = () => {
     <>
       <header className="header">
         <div className="title">
-          <p>Italian Cuisine</p>
+          <p>IC</p>
         </div>
-        <ul onClick={chooseDish} className="links">
+        <ul
+          onClick={chooseDish}
+          className={`links
+          }`}
+        >
           {allDishes.map((dish: string, i: number) => {
             return (
               <li key={i} className="link-elem">
@@ -162,7 +167,17 @@ const App = () => {
         <div className="container">
           <h1>{dishName}</h1>
           <div className="my-cooking">
-            <ul>{currentCuisineJSX}</ul>
+            <ul
+              className={`${
+                currentDish === allBread
+                  ? "Bread"
+                  : currentDish === allPasta
+                  ? "Pasta"
+                  : "Chicken"
+              }`}
+            >
+              {currentCuisineJSX}
+            </ul>
           </div>
         </div>
         <div className="link">

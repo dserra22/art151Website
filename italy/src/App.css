@@ -131,3 +131,30 @@ video {
   display: block;
   color: #a20400;
 }
+
+.Bread {
+  background-color: #004404;
+  /* color:  */
+}
+
+.Bread li {
+  /* background-color: #004404; */
+  background-color: #570200;
+}
+.Bread .dish-title {
+  /* background-color: #004404; */
+  color: #a20400;
+}
+
+.Pasta {
+  background-color: #570200;
+}
+.Pasta li {
+  /* background-color:; */
+  background-color: #004404;
+}
+.Pasta .dish-title {
+  /* background-color:; */
+  background-color: #004404;
+  color: #007f08;
+}
