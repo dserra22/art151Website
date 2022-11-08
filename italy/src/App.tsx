@@ -101,7 +101,7 @@ const App = () => {
     } else if (curDish === "Chicken") {
       updateLinkName("https://en.wikipedia.org/wiki/Chicken");
     }
-  }, [currentDish]);
+  }, [currentDish, chooseDishName]);
 
   let currentCuisineJSX = currentDish.map((dish: any, i: number) => {
     let mediaJSX: JSX.Element = (
@@ -162,7 +162,7 @@ const App = () => {
         </div>
         <div className="link">
           <div className="link-title">
-            <a href={dishLink} target="_blank">
+            <a href={dishLink} target="_blank" rel="noopener">
               More {dishName}
             </a>
           </div>
