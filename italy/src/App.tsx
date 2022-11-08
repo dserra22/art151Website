@@ -76,22 +76,24 @@ const App = () => {
     }
   };
 
-  const chooseDishName = (): string => {
-    if (currentDish === allBread) {
-      return "Bread";
-    } else if (currentDish === allPasta) {
-      return "Pasta";
-    } else if (currentDish === allChicken) {
-      return "Chicken";
-    }
-    return "";
-  };
   const [dishName, updateDishName] = useState("");
   const [dishLink, updateLinkName] = useState("");
 
   useEffect(() => {
-    updateDishName(chooseDishName());
-    let curDish = chooseDishName();
+    updateDishName(
+      currentDish === "Bread"
+        ? "Bread"
+        : currentDish === "Pasta"
+        ? "Pasta"
+        : "Chicken"
+    );
+    let curDish =
+      currentDish === "Bread"
+        ? "Bread"
+        : currentDish === "Pasta"
+        ? "Pasta"
+        : "Chicken";
+
     if (curDish === "Bread") {
       updateLinkName("https://en.wikipedia.org/wiki/Bread");
     } else if (curDish === "Pasta") {
@@ -101,7 +103,7 @@ const App = () => {
     } else if (curDish === "Chicken") {
       updateLinkName("https://en.wikipedia.org/wiki/Chicken");
     }
-  }, [currentDish, chooseDishName]);
+  }, [currentDish]);
 
   let currentCuisineJSX = currentDish.map((dish: any, i: number) => {
     let mediaJSX: JSX.Element = (
@@ -162,7 +164,7 @@ const App = () => {
         </div>
         <div className="link">
           <div className="link-title">
-            <a href={dishLink} target="_blank" rel="noopener">
+            <a href={dishLink} target="_blank" rel="noreferrer">
               More {dishName}
             </a>
           </div>
