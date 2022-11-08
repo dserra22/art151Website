@@ -81,18 +81,21 @@ const App = () => {
 
   useEffect(() => {
     updateDishName(
-      currentDish === "Bread"
+      currentDish === allBread
         ? "Bread"
-        : currentDish === "Pasta"
+        : currentDish === allPasta
         ? "Pasta"
         : "Chicken"
     );
+
     let curDish =
-      currentDish === "Bread"
+      currentDish === allBread
         ? "Bread"
-        : currentDish === "Pasta"
+        : currentDish === allPasta
         ? "Pasta"
         : "Chicken";
+
+    console.log(currentDish);
 
     if (curDish === "Bread") {
       updateLinkName("https://en.wikipedia.org/wiki/Bread");
